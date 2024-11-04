@@ -1,0 +1,25 @@
+CMake
+
+[CMAKE_VERSION]
+
+Release version
+<major>.<minor>.<patch>[-rc<n>] 
+<path> component is less than 20,000,000
+
+Development version
+<major>.<minor>.<date>[-<id>]
+<date> component's format CCYYMMDD 
+<id> arbitary text
+
+Individual component values are also available in variables:
+CMAKE_MAJOR_VERSION
+CMAKE_MINOR_VERSION
+CMAKE_PATCH_VERSION
+CMAKE_TWEAK_VERSION
+
+Use 'if()' command 
+operators VERSION_LESS, VERSION_GREATER, VERSION_EQUAL, VERSION_LESS_EQUAL, VERSION_GREATER_EQUAL
+CMAKE_VERSION
+
+CMP0054 
+Only interpret if() arguments as variables or keywords when unquoted.
