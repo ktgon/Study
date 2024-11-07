@@ -21,7 +21,7 @@ CMAKE_VERSION
 
 CMP0054 
 Only interpret if() arguments as variables or keywords when unquoted.
---> <module>.
+
 ## cmake-language(7)
 
 ## Organization  
