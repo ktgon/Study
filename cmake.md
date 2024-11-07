@@ -24,6 +24,49 @@ Only interpret if() arguments as variables or keywords when unquoted.
 
 ## cmake-language(7)
 
+### Organization  
+- Input file은 "CMake Language"로 쓰여지며 CMakeLists.txt 또는 .cmake 확장자를 가지는 파일이다.
+- 프로젝트에서 CMake Language source file은  
+Directories(CMakeLists.txt), Scripts(<script>.cmake), Moodules(<module>.cmake)을 구성하게 된다. 
+
+#### Directories  
+- CMake가 project source tree를 처리할 때, entry point는 최상위 소스 디렉토리에 있는 CMakeLists.txt이다.
+- 이 파일은 entire build specification을 포함하거나  
+빌드에 subdirectories를 추가하기 위해 add_subdirectory() command를 사용한다.
+- command로 추가된 각 subdirectory는 그 directory의 entry point로 CMakeLists.txt파일을 포함해야 한다.
+- CMakeLists.txt 파일이 수행된 각 source directory에 대하여  
+CMake는 대응하는 directory를 build tree에 생성하여 기본 작업 디렉토리 및 출력 디렉토리로 역할을 하도록 한다.
+
+#### Scripts
+- 각 <script>.cmake 소스 파일은 -P 옵션을 가지는 cmake(1) command-line tool을 통하여 수행된다.
+- Script mode는 주어진 CMake Language source file의 commands를 단순히 수행하며  
+build system을 생성하지 않는다.  
+- CMake commands는 build targets나 actions를 정의하도록 허용하지 않는다. 
+
+#### Modules 
+- Directories나 Scripts안의 CMake Language code는  
+포함된 context의 scope에 있는 <module>.cmake 을 로드하기 위하여  
+include() command를 사용한다.
+- cmake-modules(7) 메뉴얼 페이지 참조  
+CMake 배포본에 포함된 modules에 대한 문서  
+- Project의 source tree는 자체 module들을 제공하며 CMAKE_MODULE_PATH 변수에 해당 위치를 지정한다. 
+
+### Syntax  
+
+#### Encoding  
+- CMake Language source file은 모든 지원 플랫폼에 대한 이식성의 극대화를 위하여 7-bit ASCII text로 작성된다.  
+- Newlines은 \n 이나 \r\n 으로 encoding 되지만 input files이 읽히자마자 \n으로 변환하게 된다.  
+이 구현은 8-bit clean이므로 소스 파일은 시스템 API가 지원되는 플랫폼에서 UTF-8로 encoding될 수 있다.
+- 추가로 CMake 3.2와 그 상위 버전은 Windows에서 UTF-8로 encoding된 소스 파일을 지원한다.  
+(System APIs를 호출하기 위해서 UTF-16을 사용)
+- 또한 CMake 3.0과 그 상위 버전은 소스파일상의 leading UTF-8 Byte-Order Mark를 지원한다.  
+(BOM이 파일의 앞에 위치한 경우)
+
+#### Source Files  
+- CMake Language source file은 newlines와 선택적으로 spaces와 Comments로 구분되는  
+0 개 이상의 Command Invocations로 구성된다.
+- Command Arguments나 Bracket Comment 안에 있지 않은 소스 파일 라인은 Line Comment로 끝날 수 있다는 점에 유의하라. 
+
 ### Escape Sequences 
 - Escape Sequence는 \ 다음에 하나의 문자가 나온다.  
 \ 다음에 non-alphanumeric 문자가 오면 구문으로 해석하지 않고 리터럴 문자로 엔코딩한다.
