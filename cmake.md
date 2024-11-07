@@ -172,7 +172,7 @@ content의 한 부분으로 다뤄져야 한다.
 Make-style references는 문자 그대로 content의 일부로 다뤄지며 variable expansion을 하지 않는다.  
 이들은 single argument의 일부로 처리된다. (구분된 $, (, MAKEVAR, ) arguments 보다는)  
   
-위의 "unquoted_legacy" 생성규칙은 이런 argument를 나타낸다. 
+위의 "unquoted_legacy" 생성규칙은 이런 argument를 나타낸다.  
 우리는 legacy unquoted arguments를 새로운 코드에 쓰는걸 권장하지 않는다.  
 대신 content를 표현하는데 Quoted Argument 나 Bracket Argument를 사용하라. 
 
