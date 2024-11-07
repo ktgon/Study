@@ -24,12 +24,12 @@ Only interpret if() arguments as variables or keywords when unquoted.
 
 ## cmake-language(7)
 
-### Organization  
+## Organization  
 - Input file은 "CMake Language"로 쓰여지며 CMakeLists.txt 또는 .cmake 확장자를 가지는 파일이다.
 - 프로젝트에서 CMake Language source file은  
 Directories(CMakeLists.txt), Scripts(<script>.cmake), Moodules(<module>.cmake)을 구성하게 된다. 
 
-#### Directories  
+### Directories  
 - CMake가 project source tree를 처리할 때, entry point는 최상위 소스 디렉토리에 있는 CMakeLists.txt이다.
 - 이 파일은 entire build specification을 포함하거나  
 빌드에 subdirectories를 추가하기 위해 add_subdirectory() command를 사용한다.
@@ -37,13 +37,13 @@ Directories(CMakeLists.txt), Scripts(<script>.cmake), Moodules(<module>.cmake)�
 - CMakeLists.txt 파일이 수행된 각 source directory에 대하여  
 CMake는 대응하는 directory를 build tree에 생성하여 기본 작업 디렉토리 및 출력 디렉토리로 역할을 하도록 한다.
 
-#### Scripts
+### Scripts
 - 각 <script>.cmake 소스 파일은 -P 옵션을 가지는 cmake(1) command-line tool을 통하여 수행된다.
 - Script mode는 주어진 CMake Language source file의 commands를 단순히 수행하며  
 build system을 생성하지 않는다.  
 - CMake commands는 build targets나 actions를 정의하도록 허용하지 않는다. 
 
-#### Modules 
+### Modules 
 - Directories나 Scripts안의 CMake Language code는  
 포함된 context의 scope에 있는 <module>.cmake 을 로드하기 위하여  
 include() command를 사용한다.
@@ -51,9 +51,9 @@ include() command를 사용한다.
 CMake 배포본에 포함된 modules에 대한 문서  
 - Project의 source tree는 자체 module들을 제공하며 CMAKE_MODULE_PATH 변수에 해당 위치를 지정한다. 
 
-### Syntax  
+## Syntax  
 
-#### Encoding  
+### Encoding  
 - CMake Language source file은 모든 지원 플랫폼에 대한 이식성의 극대화를 위하여 7-bit ASCII text로 작성된다.  
 - Newlines은 \n 이나 \r\n 으로 encoding 되지만 input files이 읽히자마자 \n으로 변환하게 된다.  
 이 구현은 8-bit clean이므로 소스 파일은 시스템 API가 지원되는 플랫폼에서 UTF-8로 encoding될 수 있다.
@@ -62,10 +62,119 @@ CMake 배포본에 포함된 modules에 대한 문서
 - 또한 CMake 3.0과 그 상위 버전은 소스파일상의 leading UTF-8 Byte-Order Mark를 지원한다.  
 (BOM이 파일의 앞에 위치한 경우)
 
-#### Source Files  
+### Source Files  
 - CMake Language source file은 newlines와 선택적으로 spaces와 Comments로 구분되는  
 0 개 이상의 Command Invocations로 구성된다.
-- Command Arguments나 Bracket Comment 안에 있지 않은 소스 파일 라인은 Line Comment로 끝날 수 있다는 점에 유의하라. 
+- Command Arguments나 Bracket Comment 안에 있지 않은 소스 파일 라인은 Line Comment로 끝날 수 있다는 점에 유의하라.  
+(Line Comment는 Command Arguments나 Bracket Comment 안에서는 적용되지 않는다.) 
+
+### Command Invocations 
+- Command invocation은 이름뒤에 괄호로 묶인 인수들이 공백으로 구분되어 오는 형식이다. 
+- For example
+```
+add_executable(hello world.c)
+```
+- Command 이름은 case-insensitive 하다.
+- Arguments에서 중첩된 unquoted parentheses는 균형을 맞춰야 한다.
+- 각 ( 나 )은 command invocation에 unquoted argument 리터럴로 주어진다.  
+이것은 if() command 호출시 conditions를 묶는데 사용된다. 
+```
+if(FALSE AND (FALSE OR TRUE)) # evaluates to FALSE
+```
+- Note  
+CMake version이 3.0 이전이면 command name identifiers는 최소 2개 문자를 요구함.  
+2.8.12 이전이면 Unquoted Argument나 Quoted Argument 뒤에 바로 Quoted Argument가  
+공백구분자 없이 오는 것을 허용한다.  
+호환을 위하여 2.8.12 이상에서 이런 코드를 허용하지만 경고가 발생한다.
+
+### Command Arguments  
+- Command Invocation은 3가지 타입의 arguments가 있다.
+
+#### Bracket Argument  
+- Lua의 long bracket syntax 에서 영감을 받은 bracket argument는  
+content를 동일 길이의 opening 과 closing bracket으로 감싼다. 
+- Opening bracket은 [ 다음에 0 이상의 = 다음에 [ 가 온다.
+- 대응되는 closing bracket은 ] 다음에 동일한 수의 = 다음에 ]로 작성된다.
+- Brackets는 중첩되지 않는다.
+- Opening과 closing brackets에 대하여 유일한 길이를 항상 선택할 수 있어  
+다른 길이의 closing brackets를 포함할 수 있다.   
+(여는 대괄호와 닫는 대괄호의 길이를 서로 다르게 할 수 있다.)
+- Bracekt argument content는 opening과 closing bracket사이에 모두 text로 구성된다.  
+단, opening bracket 다음에 바로 오는 newline은 무시된다.
+- 내용이 포함된 부분 예를 들어 Excape Sequences나 Variable References 등은 evaluation이 수행되지 않는다. 
+- Bracket argument는 항상 command invocation에 정확히 하나의 argument로 제공된다.
+```
+message([=[
+This is the first line in a bracket argument with bracket length 1.
+No \-escape sequences or ${variable} references are evaluated.
+This is always one argument even though it contains a ; character.
+The text does not end on a closing bracket of length 0 like ]].
+It does end in a closing bracket of length 1.
+]=])
+```
+- 3.0 이전 버전은 bracket arguments를 지원하지 않는다.  
+Opening bracket을 Unquoted Argument의 시작점으로 해석한다.
+
+#### Quoted Argument 
+- Quoted argument는 opening과 closing double-quote 문자 사이에 content를 포함한다.
+- Escape Sequences 와 Variable Reference는 evaluation 된다.
+- 항상 정확히 하나의 arguemnt로 command invocation에 제공된다.
+```
+message("This is a quoted argument containing multiple lines.
+This is always one argument even though it contains a ; character.
+Both \\-escape sequences and ${variable} references are evaluated.
+The text does not end on an escaped double-quote like \".
+It does end in an unescaped double quote.
+")
+```
+- 홀수개의 backslashes에서 행의 마지막 \는 line continuation으로 처리되며  
+바로 따라오는 newline character와 함께 무시된다.
+```
+message("\
+This is the first line of a quoted argument. \
+In fact it is the only line but since it is long \
+the source code uses line continuation.\
+")
+```  
+- 3.0 이전 버전은 \ 의 continuation을 지원하지 않는다.  
+끝에 홀수 개의 \ characters가 있는 라인을 포함하는 quoted arguments에 대해  
+erroe를 리포팅한다.
+
+### Unquoted Argument 
+- Unquoted Argument는 quoting syntax에 포함되지 않는다.
+- backslash로 escaping될 때를 제외하고 whitespace, (, ), #, ", \ 를 포함하지 않는다.
+- Unquoted argument content는 허용되거나 escaped된 문자들로된 연속적인 블록의 모든 텍스트로 구성된다.
+- Escape Sequences와 Variable References는 evaluated된다.
+- 결과값은 Lists가 elements로 분할되는 방법과 동일하게 분할된다.  
+각 non-empty element는 command invocation에 argument로 제공된다.  
+따라서 unquoted argument는 command invocation에 0개 이상의 arguments를 제공한다.
+- Example
+```
+foreach(arg
+    NoSpace
+    Escaped\ Space
+    This;Divides;Into;File;Arguments
+    Escaped\;Semicolon
+    )
+  message("${arg}")
+endforeach()
+```
+- Note  
+Legacy CMake code 지원을 위해서는 unquoted argument는 
+double-quoted strings("....", possible enclosing horizontal whitespace) 와  
+make-style variable reference($(MAKEVAR))를 포함한다.  
+  
+Unescaped double-quotes는 쌍이 맞아야하고 unquoted argument의 맨 앞에 나타나지 않아야 하며  
+content의 한 부분으로 다뤄져야 한다.  
+예를 들어, unquoted arguments -Da="b c", -Da=$(v)와 a" "b"c"d는 각각 문자 그대로 해석된다.  
+대신 "-Da=\"bc\"", "-Da=$(v)"와 "a\ \"b\"c\"d" 로 각각 쓸 수 있다.   
+  
+Make-style references는 문자 그대로 content의 일부로 다뤄지며 variable expansion을 하지 않는다.  
+이들은 single argument의 일부로 처리된다. (구분된 $, (, MAKEVAR, ) arguments 보다는)  
+
+위의 "unquoted_legacy" 생성규칙은 이런 argument를 나타낸다. 
+우리는 legacy unquoted arguments를 새로운 코드에 쓰는걸 권장하지 않는다.  
+대신 content를 표현하는데 Quoted Argument 나 Bracket Argument를 사용하라. 
 
 ### Escape Sequences 
 - Escape Sequence는 \ 다음에 하나의 문자가 나온다.  
@@ -96,7 +205,7 @@ cache entry에 없다면 empty stirng으로 대체된다.
 
 ### Comments  
 - comment는 # 문자로 시작한다.  
-# 문자는 Bracket Argument, Quoted Argument 안에 있지 않거나  
+\# 문자는 Bracket Argument, Quoted Argument 안에 있지 않거나  
 Unquoted Argument의 일부로 \로 escape 되지 않아야 한다. 
 - Bracket Commnet와 Line Comment 가 있다.
 
