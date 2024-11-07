@@ -27,7 +27,7 @@ Only interpret if() arguments as variables or keywords when unquoted.
 ## Organization  
 - Input file은 "CMake Language"로 쓰여지며 CMakeLists.txt 또는 .cmake 확장자를 가지는 파일이다.
 - 프로젝트에서 CMake Language source file은  
-Directories(CMakeLists.txt), Scripts(<script>.cmake), Modules(<module>.cmake)을 구성하게 된다. 
+Directories(CMakeLists.txt), Scripts(<script>.cmake), Modules(\<module\>.cmake)을 구성하게 된다. 
 
 ### Directories  
 - CMake가 project source tree를 처리할 때, entry point는 최상위 소스 디렉토리에 있는 CMakeLists.txt이다.
