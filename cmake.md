@@ -166,12 +166,12 @@ make-style variable reference($(MAKEVAR))를 포함한다.
   
 Unescaped double-quotes는 쌍이 맞아야하고 unquoted argument의 맨 앞에 나타나지 않아야 하며  
 content의 한 부분으로 다뤄져야 한다.  
-예를 들어, unquoted arguments -Da="b c", -Da=$(v)와 a" "b"c"d는 각각 문자 그대로 해석된다.  
+예를 들어, unquoted arguments -Da="b c", -Da=$(v)와 a" "b"c"d는 각각 문자 그대로 해석된다.   
 대신 "-Da=\"bc\"", "-Da=$(v)"와 "a\ \"b\"c\"d" 로 각각 쓸 수 있다.   
-  
+   
 Make-style references는 문자 그대로 content의 일부로 다뤄지며 variable expansion을 하지 않는다.  
 이들은 single argument의 일부로 처리된다. (구분된 $, (, MAKEVAR, ) arguments 보다는)  
-
+  
 위의 "unquoted_legacy" 생성규칙은 이런 argument를 나타낸다. 
 우리는 legacy unquoted arguments를 새로운 코드에 쓰는걸 권장하지 않는다.  
 대신 content를 표현하는데 Quoted Argument 나 Bracket Argument를 사용하라. 
