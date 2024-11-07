@@ -180,9 +180,9 @@ Make-style references는 문자 그대로 content의 일부로 다뤄지며 vari
 - Escape Sequence는 \ 다음에 하나의 문자가 나온다.  
 \ 다음에 non-alphanumeric 문자가 오면 구문으로 해석하지 않고 리터럴 문자로 엔코딩한다.
 - \t, \r, \n 은 tab, carriage return, newline 문자를 엔코딩한다.
-- Variable References 외부에 있는 \; 는 자체적으로 엔코딩하지만  
+- Variable References 외부에 있는 \\; 는 자체적으로 엔코딩하지만  
 Unquoted Argument에서 argument value를 분할하지 않고 ;를 엔코딩하는데 사용된다. 
-- Variable References 내부에 있는 \; 는 리터럴 ; 문자를 엔코딩한다. 
+- Variable References 내부에 있는 \\; 는 리터럴 ; 문자를 엔코딩한다. 
 
 ### Variable References  
 - Variable reference 는 ${<variable>} 형식을 갖고 있으며
