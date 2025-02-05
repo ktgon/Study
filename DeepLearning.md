@@ -41,8 +41,7 @@ DeepLearning + Recursive = RNN
 AlexNet 팀을 Google에서 사감.  
 
 #### 이론  
-의사결정나무 -> 분류를 한다면 Gini Coefficient를 본다. -> 지니계수가 가장 큰 부분을 찾는다.  
--> 이것을 tree 구조로 표현한다.  
+의사결정나무 -> 분류를 한다면 Gini Coefficient를 본다. -> 지니계수가 가장 큰 부분을 찾는다. -> 이것을 tree 구조로 표현한다. => 조건을 데이터에서 찾는 것이다. (Machine Learning)  
 로젠블라트 -> 퍼셉트론 
 
 
