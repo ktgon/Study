@@ -11,7 +11,7 @@ E: The repository 'http://apt.llvm.org/noble llvm-toolchain-noble-19 InRelease' 
 N: Updating from such a repository can't be done securely, and is therefore disabled by default.  
 N: See apt-secure(8) manpage for repository creation and user configuration details.
 ```
-2. /etc/apt/apt.conf.d/99verify-peer.conf 생성 후 아래 내용 추가
+2. /etc/apt/apt.conf.d/99verify-peer.conf 생성 후 아래 내용 추가  
 Acquire { https::Verify-Peer false }
 
 3. 다시 sudo apt update 수행
