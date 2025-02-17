@@ -22,6 +22,13 @@ https://blog.logger.one/entry/Ubuntu-%EC%97%90%EC%84%9C-GPG-ERROR-NOPUBKEY-%EC%9
 
 5. 이 후 아래 명령 처리 성공함.
 ```zsh
-sudo apt update
-sudo apt install llvm-19 clang-19 lldb-19
+❯ sudo apt-key adv --keyserver keyserver.ubuntu.com --recv AF4F7421
+Warning: apt-key is deprecated. Manage keyring files in trusted.gpg.d instead (see apt-key(8)).
+Executing: /tmp/apt-key-gpghome.c2k9h5dehj/gpg.1.sh --keyserver keyserver.ubuntu.com --recv AF4F7421
+gpg: key 15CF4D18AF4F7421: public key "Sylvestre Ledru - Debian LLVM packages <sylvestre@debian.org>" imported
+gpg: Total number processed: 1
+gpg:               imported: 1
+
+> sudo apt update
+> sudo apt install llvm-19 clang-19 lldb-19
 ```
