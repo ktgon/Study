@@ -59,5 +59,47 @@ chmod g+w file.txt
 chmod -R a+rx /project
 
 chgrp 
--R: recursively 
+-R: recursively  
 =>보통은 chown을 많이 쓴다. 
+
+### Environment Variable  
+- PATH, HOME, USER, SHELL, TERM, PWD, LD_LIBRARY_PATH, JAVA_HOME
+- View Environment Variables   
+env, printenv, set(shell var + env var)
+- export <VAR>=<VALUE> => 다른 세션에서도 사용 가능하게 됨
+- echo 또는 쉘 스크립트에서 $HOME와 같은 형식으로 사용이 가능함.
+- /etc/environment or /etc/profile => for all users  
+~/.bashrc, ~/.bash_profile, ~/.profile => for a specific user
+.profile은 bash가 아니어도 호출된다. => 좀 더 generic 하다.    
+.bash_profile이 없는 경우 .profile이 호출된다.  
+.bashrc - runs every time a new interactive, non-login shell is started
+.bash_profile - runs once at login for login shells.
+로그인을 하는 경우 => .bash_profile 이후 .bashrc 호출됨.(일반적으로 호출하도록 설정을 해준다. . ~/.bashrc) 
+새로운 쉘을 여는 경우 => .bashrc 호출됨.
+```
+if [ -f ~/.bashrc ]; then
+  . ~/.bashrc
+fi
+```
+
+### SSH  
+```
+ssh username@hostname
+ssh -p 2222 ubuntu@localhost
+
+ssh-keygen -t rsa -b 4096 -f ~/.ssh/custom_rsa_key
+
+ssh-copy-id -p 2222 -i ~/.ssh/custom_rsa_key.pub ubuntu@localhost
+cat ~/.ssh/custom_rsa_key.pub | ssh -p 2222 ubuntu@localhost "mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys
+ssh -i ~/.ssh/custom_rsa_key -p 2222 ubuntu@localhost
+
+scp localfile.txt username@hostname:/remote/directory/
+scp -p 2222 localfile.txt username@hostname:/remote/directory/
+
+sftp username@hostname
+sftp -P 2222 username@hostname
+
+exit
+```
+
+
