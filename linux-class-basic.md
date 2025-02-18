@@ -159,3 +159,33 @@ head -q f1.txt f2.txt
 tail -n 2 f1.txt
 tail -f --pid=1234 logfile.log
 ```
+
+### diff/cmp  
+- diff  
+compare files line by line and report the differences between them.  
+It shows the changes required to make one file match the other.  
+\-c context mode, provices some context lines around the differences.  
+\-u unified mode, shows differences together in a unified format.  
+\-i ignore case differences.
+\-r recursively compare directories.  
+\-w ignore differences in white spaces.
+
+-cmp  
+compare two files byte by byte  
+useful for binary files but works with text files as well  
+exit status (0: files are identical, 1: files differ, 2: an error occurred)  
+\-b prints the differing bytes  
+\-i SKIP skips the first SKIP bytes of both files  
+\-i SKIP1:SKIP2  skips different numbers of bytes for each file  
+-l Prints the byte numbers(decimal) and the differing byte values in octal.  
+-n LIMIT compares only up to LIMIT bytes.  
+-s Silent mode, does not output differences, only returns the exit status to indicate if files differ.  
+
+```
+diff f1.txt f2.txt
+diff -u f1.txt f2.txt
+
+cmp f1.txt f2.txt
+cmp -l f1.txt f2.txt
+cmp -b f1.txt f2.txt 
+```
