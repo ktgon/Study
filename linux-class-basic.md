@@ -102,4 +102,52 @@ sftp -P 2222 username@hostname
 exit
 ```
 
+### grep(Global Regular Expression Print)  
+\-i : case-insensitive  
+\-v : inverts the match, showing lines that do not contain the pattern.  
+\-r or \-R : Recursively searches directories.  
+\-l : Lists file names only if the file contains the pattern.  
+\-n : Displays line numbers alongside each matching line.  
+\-c : Counts the number of lines that match the pattern.  
+
+```
+grep -i "apple" fruits.txt
+grep -v "apple" fruits.txt
+grep -r "apple" /path/to/directory
+grep -l "apple" /path/to/directory/*
+grep -n "apple" fruits.txt
+grep -c "apple" fruits.txt
+cat fruits.txt | grep "apple"
+grep -E "appl(e|es)" fruits.txt
+```
+
+### wc(word count)  
+reads one or more input files and provides statistical information (such as the number of lines, words, characters)  
+also take input from stdin  
+
+\-l : counts the number of lines  
+\-w : counts the number of words  
+\-c : counts the number of bytes  
+\-m : counts the number of characters  
+\-L : gives the length of the longest line  
+
+```
+wc file.txt
+wc file.txt file1.txt
+echo "hello world" | wc
+```
+
+### head/tail  
+- head  
+outputs the beginning sections (default is the first 10 lines)  
+\-n \[number\] Outputs the specified number of lines from the start.   
+\-c \[number\] Outputs the specified number of bytes from the start.   
+\-q Suppresses printing of file headers if multiple files are specified.  => 파일별 구분을 없앰.   
+
+- tail
+outputs the end section (default is the last 10 lines) of a text file or stdin  
+\-n \[number\] Outputs the specified number of lines from the end.  
+\-c \[number\] Outputs the specified number of bytes from the end.  
+\-f follow mode.  
+\-\-pid=\[PID\] stop following the file when the processes with PID exits.   
 
