@@ -170,7 +170,7 @@ It shows the changes required to make one file match the other.
 \-r recursively compare directories.  
 \-w ignore differences in white spaces.
 
--cmp  
+- cmp  
 compare two files byte by byte  
 useful for binary files but works with text files as well  
 exit status (0: files are identical, 1: files differ, 2: an error occurred)  
