@@ -151,3 +151,11 @@ outputs the end section (default is the last 10 lines) of a text file or stdin
 \-f follow mode.  
 \-\-pid=\[PID\] stop following the file when the processes with PID exits.   
 
+```
+head -n 2 f1.txt
+head f1.txt f2.txt
+head -q f1.txt f2.txt
+
+tail -n 2 f1.txt
+tail -f --pid=1234 logfile.log
+```
