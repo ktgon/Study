@@ -218,3 +218,120 @@ cmp -b f1.txt f2.txt
 # f1.txt f2.txt differ: byte 24, line 2 is  61 1  62 2
 
 ```
+
+### sort, uniq
+- sort  
+sort lines in a text file or from stdin.  
+based on various criteria like numeric values, alphabetical order, and specific columns.  
+\-n sorts numerically  
+\-r reverses the sorting order  
+\-k \[field\] sorts based on a specific field (column) (whitespace default)     
+\-t \[delimiter\] specifies the field delimiter    
+\-u output only unique lines  
+
+- uniq  
+used to filter out repeated lines in a sorted file.  
+it operates on adjacent repeated lines, so it is often used in conjunction with sort.  
+\-c prints each line preceded by the number of occurrences.  
+\-d only outputs lines that are repeated.  
+\-u outputs only unique lines  
+\-i ignores case differences.  
+
+```
+# s1.txt
+1,c
+30,a
+20,z
+11,b
+12,s
+15,k
+24,l
+
+sort s1.txt
+1.c
+11,b
+12,s
+15,k
+20,z
+24,l
+30,a
+
+sort -r s1.txt
+반대로
+
+sort -t, -k2 s1.txt
+30,a
+11,b
+1,c
+15,k
+24,l
+12,s
+20,z
+
+# u1.txt
+1
+1
+2
+3
+3
+4
+5
+6
+6
+
+uniq -c u1.txt
+2 1
+1 2
+2 3
+1 4
+1 5
+2 6
+
+uniq -d u1.txt
+1
+3
+6
+```
+
+### sed (stream editor)  
+sed is primarily used for modifying text in a scriptable manner   
+perform basic text transformations on an input stream  (a file or input from a pipeline)  
+key features  
+ line addressing \- perform operation on specific lines or on ranges of lines that match a pattern  
+ substitution \- s/pattern/replacement/flags  
+ deletion \- remove lines that match a specific pattern  
+ in-place editing \- with \-i option, sed can edit files in-place (directly modifying the file)  
+```
+# file.txt context
+hello world hello world
+hello world
+delete me
+apple is so sweat
+
+insert_here
+
+Apple
+
+
+sed 's/hello/world' file.txt
+sed 's/hello/world/g' file.txt
+sed '/delete me/d' file.txt
+sed -i 's/apple/orange/g' file.txt
+
+# modify lines and print only those were changed. 
+sed -n 's/apple/orange/p' file.txt
+
+# print only the first 2 lines of a file.
+sed '3,$ d' file.txt 
+
+# append 
+sed '/insert_here/a New Line' file.txt
+# prepend
+sed '/insert_here/i New Line before' file.txt
+
+# execute multiple sed commands in one go 
+sed -e 's/apple/orange/g' -e '/delete me/d' file.txt
+
+sed '1,3d' file.txt
+sed 's/apple/orange/gI' file.txt
+```
