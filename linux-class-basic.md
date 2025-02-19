@@ -182,10 +182,39 @@ exit status (0: files are identical, 1: files differ, 2: an error occurred)
 -s Silent mode, does not output differences, only returns the exit status to indicate if files differ.  
 
 ```
+# f1.txt
+hello world
+hello world1
+hello world1
+
+# f2.txt
+hello world
+hello world2
+hello world1
+
 diff f1.txt f2.txt
+# 2c2
+# < hello world1
+# ---
+# > hello world2
+# 참고) a - add, c - change, d - delete
+
 diff -u f1.txt f2.txt
+# --- f1.txt      2025-02-18 17:05:54.676849435 +0900
+# +++ f2.txt      2025-02-18 17:06:17.049154561 +0900
+# @@ -1,3 +1,3 @@
+#  hello world
+# -hello world1
+# +hello world2
+#  hello world1
 
 cmp f1.txt f2.txt
+# f1.txt f2.txt differ: char 24, line 2  -> 2번째 라인의 24 바이트부터 다르다. 
+
 cmp -l f1.txt f2.txt
-cmp -b f1.txt f2.txt 
+# 24 61 62  -> 24바이트 위치에서 ascii 61 -> 62로 바꿔야한다. 
+
+cmp -b f1.txt f2.txt
+# f1.txt f2.txt differ: byte 24, line 2 is  61 1  62 2
+
 ```
